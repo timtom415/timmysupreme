@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var CITY = "NYC";
+  var CITY = "BOS";
 
   function prefersReducedMotion() {
     return (
