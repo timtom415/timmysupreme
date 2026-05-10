@@ -104,7 +104,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 28rem;
+  max-width: min(29rem, 100%);
 }
 
 .logo-link {
@@ -133,8 +133,16 @@ body {
   white-space: nowrap;
 }
 
-.timestamp {
+.timestamps {
   margin: 1.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.timestamp-line {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: 0.875rem;
   letter-spacing: 0.02em;
@@ -192,12 +200,45 @@ body {
 
 .social-row {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
-  max-width: 200px;
+  max-width: min(24rem, 100%);
   margin-top: auto;
   padding-top: 4rem;
+  gap: 0.75rem 1rem;
+}
+
+.social-emails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+.social-email-link {
+  font-family: var(--font-mono);
+  font-size: 0.59rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+  word-break: break-all;
+}
+
+.social-email-link:hover,
+.social-email-link:focus-visible {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 0.12em;
+}
+
+.social-email-link:focus-visible {
+  outline: 1px solid var(--fg);
+  outline-offset: 2px;
 }
 
 .section--home .home-inner {
@@ -469,6 +510,7 @@ body {
 .contact-val {
   color: var(--fg);
   text-decoration: none;
+  word-break: break-all;
 }
 
 .contact-val:hover,
@@ -497,6 +539,24 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (max-width: 560px) {
+  .social-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem 1.75rem;
+  }
+
+  .social-emails {
+    flex-basis: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .social-email-link {
+    font-size: 0.6875rem;
+  }
 }
 
 @media (max-width: 600px) {

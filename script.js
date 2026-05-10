@@ -1,7 +1,9 @@
 (function () {
   "use strict";
 
-  var CITY = "BOS";
+  /** Pacific (SF) and Eastern (BOS); labels match your request — zones handle DST correctly. */
+  var TZ_SF = "America/Los_Angeles";
+  var TZ_BOS = "America/New_York";
 
   function prefersReducedMotion() {
     return (
@@ -14,15 +16,38 @@
     return n < 10 ? "0" + n : String(n);
   }
 
-  function formatTimestamp(date) {
-    var month = pad2(date.getMonth() + 1);
-    var day = pad2(date.getDate());
-    var year = date.getFullYear();
-    var h24 = date.getHours();
-    var h12 = h24 % 12;
-    if (h12 === 0) h12 = 12;
-    var minutes = pad2(date.getMinutes());
-    var ampm = h24 < 12 ? "am" : "pm";
+  function formatTimestamp(date, timeZone, cityLabel) {
+    var formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: timeZone,
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    var parts = formatter.formatToParts(date);
+    var map = {};
+    var i;
+    var p;
+
+    for (i = 0; i < parts.length; i++) {
+      p = parts[i];
+      if (p.type !== "literal") {
+        map[p.type] = p.value;
+      }
+    }
+
+    var month = pad2(parseInt(map.month, 10));
+    var day = pad2(parseInt(map.day, 10));
+    var year = map.year;
+    var hourDisplay = parseInt(map.hour, 10);
+    if (isNaN(hourDisplay)) {
+      hourDisplay = 12;
+    }
+    var minutes = pad2(parseInt(map.minute, 10));
+    var ampm = (map.dayPeriod || "am").toLowerCase();
+
     return (
       month +
       "/" +
@@ -30,24 +55,30 @@
       "/" +
       year +
       " " +
-      h12 +
+      hourDisplay +
       ":" +
       minutes +
       ampm +
       " " +
-      CITY
+      cityLabel
     );
   }
 
-  function updateTimestamp() {
-    var el = document.getElementById("live-timestamp");
-    if (!el) return;
-    el.textContent = formatTimestamp(new Date());
+  function updateClocks() {
+    var sfEl = document.getElementById("live-timestamp-sf");
+    var bosEl = document.getElementById("live-timestamp-bos");
+    var now = new Date();
+    if (sfEl) {
+      sfEl.textContent = formatTimestamp(now, TZ_SF, "SF");
+    }
+    if (bosEl) {
+      bosEl.textContent = formatTimestamp(now, TZ_BOS, "BOS");
+    }
   }
 
   function initClock() {
-    updateTimestamp();
-    setInterval(updateTimestamp, 1000);
+    updateClocks();
+    setInterval(updateClocks, 1000);
   }
 
   function smoothScrollToHash(hash, behavior) {
@@ -120,7 +151,8 @@
 
       for (i = 0; i < sections.length; i++) {
         var r = sections[i].getBoundingClientRect();
-        var visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+        var visible =
+          Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
         if (visible <= 0) continue;
 
         var center = (r.top + r.bottom) / 2;
