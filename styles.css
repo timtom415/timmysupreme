@@ -1,13 +1,23 @@
 /* Supreme-inspired portfolio — hand-written CSS only */
 
-:root {
+:root,
+[data-theme="dark"] {
   --bg: #000000;
   --fg: #ffffff;
   --logo-red: #e8131b;
   --muted: #b3b3b3;
   --dim: rgba(255, 255, 255, 0.6);
+  --leader: rgba(179, 179, 179, 0.8);
   --font-mono: "Courier Prime", "Courier New", Courier, monospace;
   --font-logo: "Times New Roman", Times, "Liberation Serif", serif;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #666666;
+  --dim: rgba(0, 0, 0, 0.6);
+  --leader: rgba(102, 102, 102, 0.75);
 }
 
 *,
@@ -36,6 +46,34 @@ body {
   min-height: 100vh;
   opacity: 0;
   animation: page-fade 400ms ease forwards;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.theme-toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.theme-toggle:focus-visible {
+  outline: 1px solid var(--fg);
+  outline-offset: 4px;
 }
 
 @keyframes page-fade {
@@ -332,8 +370,7 @@ body {
 .leader-line__fill {
   flex: 1 1 auto;
   min-width: 0.75rem;
-  border-bottom: 1px dotted rgba(179, 179, 179, 0.8);
-  height: 0;
+  border-bottom: 1px dotted var(--leader);  height: 0;
   align-self: center;
   opacity: 0.85;
 }
