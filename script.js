@@ -215,8 +215,38 @@
       });
     });
   }
+  function getTheme() {
+    var attr = document.documentElement.getAttribute("data-theme");
+    return attr === "light" ? "light" : "dark";
+  }
+  function applyTheme(theme) {
+    var next = theme === "light" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("portfolio-theme", next);
+    } catch (e) {}
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    if (next === "dark") {
+      btn.textContent = "light";
+      btn.setAttribute("aria-label", "Switch to light mode");
+    } else {
+      btn.textContent = "dark";
+      btn.setAttribute("aria-label", "Switch to dark mode");
+    }
+  }
+  function initThemeToggle() {
+    applyTheme(getTheme());
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      applyTheme(getTheme() === "dark" ? "light" : "dark");
+    });
+  }
 
+  
   function boot() {
+    initThemeToggle();
     initClock();
     initNavScroll();
     initSectionSpy();
