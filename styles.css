@@ -9,7 +9,7 @@
   --dim: rgba(255, 255, 255, 0.6);
   --leader: rgba(179, 179, 179, 0.8);
   --font-mono: "Courier Prime", "Courier New", Courier, monospace;
-  --font-logo: "Times New Roman", Times, "Liberation Serif", serif;
+  --font-logo: Futura, "Futura PT", "Futura Std", Jost, "Century Gothic", "Trebuchet MS", sans-serif;
 }
 
 [data-theme="light"] {
@@ -164,10 +164,12 @@ body {
 
 .logo-text {
   font-family: var(--font-logo);
-  font-style: italic;
+  font-style: oblique;
+  font-weight: 800;
   font-size: 2.2rem;
   color: var(--fg);
   line-height: 1.1;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
