@@ -8,8 +8,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+   <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("portfolio-theme");
+        if (saved === "light" || saved === "dark") {
+          document.documentElement.setAttribute("data-theme", saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
+  <button
+    type="button"
+    class="theme-toggle"
+    id="theme-toggle"
+    aria-label="Switch to light mode"
+  >light</button>
+
   <main class="page">
     <section class="section section--home" id="home" aria-label="Home">
       <div class="home-inner">
@@ -213,6 +230,10 @@
           <div class="contact-row">
             <span class="contact-key">linkedin</span>
             <a class="contact-val" href="https://www.linkedin.com/in/timothy-ng-b95a06291/" target="_blank" rel="noopener noreferrer">linkedin.com/in/timothy-ng-b95a06291/</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-key">instagram</span>
+            <a class="contact-val" href="https://www.instagram.com/timothyng" target="_blank" rel="noopener noreferrer">@timothyng</a>
           </div>
           <div class="contact-row">
             <span class="contact-key">github</span>
