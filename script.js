@@ -175,15 +175,41 @@
 
   function updateActiveSection() {
     var id = getActiveSectionId();
-    var navLinks = document.querySelectorAll(".site-nav .nav-link");
-    navLinks.forEach(function (link) {
+    var awayFromHome = id !== "home";
+    document.body.classList.toggle("nav-visible", awayFromHome);
+    var sideNav = document.getElementById("side-nav");
+    if (sideNav) {
+      sideNav.setAttribute("aria-hidden", awayFromHome ? "false" : "true");
+    }
+    var homeNavLinks = document.querySelectorAll(".site-nav .nav-link");
+    homeNavLinks.forEach(function (link) {
       var href = link.getAttribute("href");
       var sid = href && href.charAt(0) === "#" ? href.slice(1) : "";
-      if (id === "home") {
+      if (!awayFromHome) {
         link.classList.remove("is-active");
+        link.removeAttribute("aria-current");
         return;
       }
-      link.classList.toggle("is-active", sid === id);
+      var active = sid === id;
+      link.classList.toggle("is-active", active);
+      if (active) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+    
+    var sideLinks = document.querySelectorAll(".side-nav-link");
+    sideLinks.forEach(function (link) {
+      var href = link.getAttribute("href");
+      var sid = href && href.charAt(0) === "#" ? href.slice(1) : "";
+      var active = awayFromHome && sid === id;
+      link.classList.toggle("is-active", active);
+      if (active) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     });
   }
 
